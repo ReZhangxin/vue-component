@@ -132,7 +132,7 @@ computed: {
 
 ### 完整代码：
 
-```js
+```vue
 <template>
   <div class="star" :class="starType">
       <span v-for="(itemClass,index)  in itemClasses"
