@@ -1,5 +1,24 @@
 # 评分组件
 
+## 第一步：分析需求
+
+> 在页面中大量需要用到评分，比如商家评分，骑手评分，美食评分
+> 因此很多地方需要，所以要单拿出来。
+
+## 第二步：思路
+
+> 如果评4.5分以下，4分以上全部是4颗星，如果评4.5分以上，5分以下全部是4.5颗星
+
+- 1、判断多少平分：如果评分为3.7分,首先通过计算**向下取0.5**获得分数3.5
+
+- 2、添加完整星星：根据上面评分的整数多少，向数组添加多少星星
+
+- 3、添加半个星星：**判断**是否有半个的星星，如果有就想数组添加，反之不添加
+
+- 4、添加灰色星星：最后由上面2,3步获得的数组长度和5进行比较，不足的话向其中添加灰色星星
+
+## 第三步： 步骤
+
 在`header.vue`组件中使用评分组件
 
 - 第一：在模板中使用评分组件
@@ -25,7 +44,7 @@ export default {
 }
 ```
 
-## star.vue组件
+### star.vue组件
 
 父组件把两个参数传递给子组件，子组件就应该用`props`接收
 
@@ -87,18 +106,6 @@ const STR_OFF = 'off'
 
 主要逻辑：
 
-> 如果评4.5分以下，4分以上全部是4颗星，如果评4.5分以上，5分以下全部是4.5颗星
-
-**思路:**
-
-- 1、如果评分为3.7分,首先通过计算**向下取0.5**获得分数3.5
-
-- 2、添加完整星星：根据上面评分的整数多少，向数组添加多少星星
-
-- 3、添加半个星星：**判断**是否有半个的星星，如果有就想数组添加，反之不添加
-
-- 4、添加灰色星星：最后由上面2,3步获得的数组长度和5进行比较，不足的话向其中添加灰色星星
-
 ```js
 computed: {
     itemStar () {
@@ -121,4 +128,117 @@ computed: {
         return result
     }
 }
+```
+
+### 完整代码：
+
+```js
+<template>
+  <div class="star" :class="starType">
+      <span v-for="(itemClass,index)  in itemClasses"
+      :key="itemClass" :class="itemClass" class="star-item"></span>
+  </div>
+</template>
+
+<script>
+const LENGTH = 5
+const CLS_ON = 'on'
+const CLS_HALF = 'half'
+const CLS_OFF = 'off'
+
+export default {
+  props: {
+    size: {
+      type: Number
+    },
+    score: {
+      type: Number
+    }
+  },
+  computed: {
+    starType () {
+      return 'star-' + this.size
+    },
+    itemClasses () {
+      const result = []
+      // 向下取0.5
+      const score = Math.floor(this.score * 2) / 2
+      const hasDecimal = score % 1 !== 0
+      const integer = Math.floor(score)
+      for (let i = 0; i < integer; i++) {
+        result.push(CLS_ON)
+      }
+      if (hasDecimal) {
+        result.push(CLS_HALF)
+      }
+      while (result.length < LENGTH) {
+        result.push(CLS_OFF)
+      }
+      return result
+    }
+  }
+}
+</script>
+
+<style lang='stylus'>
+@import '../../common/stylus/mixin.styl'
+  .star
+    font-size: 0
+    .star-item
+      display inline-block
+      background-repeat no-repeat
+    &.star-48
+      .star-item
+        width 20px
+        height 20px
+        margin-right 22px
+        background-size 20px 20px
+        &.last-child
+          margin-right 0
+        &.on
+          bg-image('star48_on')
+        &.half
+          bg-image('star48_half')
+        &.off
+          bg-image('star48_off')
+    &.star-36
+      .star-item
+        width 15px
+        height 15px
+        margin-right 6px
+        background-size 15px 15px
+        &.last-child
+          margin-right 0
+        &.on
+          bg-image('star36_on')
+        &.half
+          bg-image('star36_half')
+        &.off
+          bg-image('star36_off')
+    &.star-24
+      .star-item
+        width 10px
+        height 10px
+        margin-right 3px
+        background-size 10px 10px
+        &.last-child
+          margin-right 0
+        &.on
+          bg-image('star24_on')
+        &.half
+          bg-image('star24_half')
+        &.off
+          bg-image('star24_off')
+
+</style>
+
+```
+
+### mixin样式
+
+```css
+bg-image($url)
+    background-image url($url + '@2x.png')
+    @media (-webkit-min-device-pixel-ratio: 3),(min-device-pixel-ratio: 3)
+        background-image url($url + '@3x.png')
 ```

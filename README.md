@@ -8,4 +8,4 @@
 
 学而不思则罔，思而不学则殆。每一步都要思考，慢慢学才会快~
 
-> - [评分组件](https://github.com/ReZhangxin/vue-component/tree/master/%E8%AF%84%E5%88%86%E7%BB%84%E4%BB%B6)
+## 编写一个评分组件：[组件入口](https://github.com/ReZhangxin/vue-component/tree/master/%E8%AF%84%E5%88%86%E7%BB%84%E4%BB%B6)
