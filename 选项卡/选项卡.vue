@@ -2,7 +2,7 @@
   <div class="s-tab">
     <ul class="title-list">
       <li class="bottom" ref="bottom"></li>
-      <li @click="tab(index)" class="tab-title" v-for="(info,index) in tabInfo" :key="index" >{{info.title}}</li>
+      <li @click="tab(index)" :class="{'heighlight':index === num}"  class="tab-title" v-for="(info,index) in tabInfo" :key="index">{{info.title}}</li>
     </ul>
     <ul class="content-list">
       <li class="tab-content" v-for="(info,index) in tabInfo" :key="index" v-show="index === num">{{info.content}}</li>
@@ -19,7 +19,7 @@ export default {
         { title: '配置管理', content: '配置管理~' },
         { title: '角色管理', content: '角色管理~' }
       ],
-      num: 1
+      num: 0
     }
   },
   methods: {
@@ -65,6 +65,8 @@ function animate (el, target) {
       font-size 14px
       &:last-child
         margin-right 0
+      &.heighlight
+        color #409eff
     .bottom
       position absolute
       bottom -1px
