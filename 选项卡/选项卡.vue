@@ -25,7 +25,6 @@ export default {
   methods: {
     tab: function (index) {
       this.num = index
-      console.log(this.$refs.bottom)
       animate(this.$refs.bottom, index * 102)
     }
   }
